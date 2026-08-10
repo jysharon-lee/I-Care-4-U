@@ -109,6 +109,7 @@ export default function HangoutInvitation() {
     ).then((response) => {
       console.log('Email sent successfully!', response.status, response.text);
     }).catch((err) => {
+      alert("EmailJS Error: Please check your console or your .env.local keys. Error: " + (err.text || err.message || JSON.stringify(err)));
       console.error('Failed to send email...', err);
     });
   };
@@ -139,9 +140,9 @@ export default function HangoutInvitation() {
           >
             <Heart size={64} color="var(--accent-pink)" fill="var(--accent-pink)" style={{ margin: '0 auto 1.5rem' }} />
             <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '3rem', marginBottom: '1rem', lineHeight: '1.2' }}>
-              Hi {invitation.to},<br/> {invitation.from} wants to hangout with you!
+              Hi {invitation.to},<br/> {invitation.from} wants to ask you out!
             </h1>
-            <p style={{ color: 'var(--text-secondary)', marginBottom: '3rem', fontSize: '1.2rem' }}>Will you go out with them?</p>
+            <p style={{ color: 'var(--text-secondary)', marginBottom: '3rem', fontSize: '1.2rem' }}>Will you go out with me?</p>
 
             <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', alignItems: 'center', height: '100px', position: 'relative' }}>
               <button 
@@ -170,7 +171,7 @@ export default function HangoutInvitation() {
         {step === 1 && (
           <motion.div key="step1" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }}>
             <Calendar size={48} color="var(--accent-blue)" style={{ marginBottom: '1rem' }} />
-            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.5rem', marginBottom: '1.5rem' }}>Yay! When are you free?</h2>
+            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.5rem', marginBottom: '1.5rem' }}>I knew you would say yes! When are you free?</h2>
             <input 
               type="date" 
               value={answers.date}
