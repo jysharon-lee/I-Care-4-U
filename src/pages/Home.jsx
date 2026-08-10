@@ -45,7 +45,7 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <h1 className="title-main">Fun Hub</h1>
+        <h1 className="title-main">ICare4U</h1>
         <p className="subtitle">Choose an experience to share or enjoy.</p>
       </motion.div>
 
