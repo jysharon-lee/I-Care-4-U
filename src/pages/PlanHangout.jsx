@@ -75,7 +75,7 @@ export default function PlanHangout() {
                 <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>We use EmailJS to securely email you their responses. We don't save this email.</p>
               </div>
 
-              <button type="submit" style={{ background: 'var(--accent-blue)', color: '#fff', padding: '1rem', borderRadius: '8px', fontSize: '1.1rem', fontWeight: 'bold', marginTop: '1rem', transition: 'opacity 0.2s' }}>
+              <button type="submit" className="btn-primary" style={{ marginTop: '1rem', width: '100%' }}>
                 Generate Link
               </button>
             </form>

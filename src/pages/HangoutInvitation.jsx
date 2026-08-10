@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import emailjs from '@emailjs/browser';
 import { 
   Heart, Calendar, Clock, MessageSquare, CheckCircle, 
   Film, TreePine, ShoppingBag, Dumbbell, UtensilsCrossed, 
@@ -87,9 +88,29 @@ export default function HangoutInvitation() {
     const finalActivity = answers.activity === 'Something Else' ? answers.customActivity : answers.activity;
     const finalFood = answers.food === 'Something Else' ? answers.customFood : answers.food;
     
-    console.log("Sending to:", invitation.email);
-    console.log("Answers:", { ...answers, activity: finalActivity, food: finalFood });
-    handleNext(); // go to success
+    const templateParams = {
+      to_email: invitation.email,
+      inviter_name: invitation.from,
+      recipient_name: invitation.to,
+      date: answers.date,
+      activity: finalActivity,
+      food: finalFood,
+      time: answers.time,
+      notes: answers.notes || 'None'
+    };
+
+    handleNext(); // Go to success screen immediately so the user isn't waiting
+
+    emailjs.send(
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      templateParams,
+      import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+    ).then((response) => {
+      console.log('Email sent successfully!', response.status, response.text);
+    }).catch((err) => {
+      console.error('Failed to send email...', err);
+    });
   };
 
   if (error) {
@@ -270,7 +291,7 @@ export default function HangoutInvitation() {
               rows={4}
               style={{ padding: '1rem', width: '100%', fontSize: '1.1rem', borderRadius: '12px', border: '2px solid #ddd', marginBottom: '2rem', fontFamily: 'inherit', resize: 'vertical' }}
             />
-            <button onClick={handleSubmit} style={{ background: 'var(--accent-blue)', color: '#fff', padding: '1rem 2rem', borderRadius: '8px', fontSize: '1.1rem', fontWeight: 'bold' }}>Send Response</button>
+            <button onClick={handleSubmit} className="btn-primary">Send Response</button>
           </motion.div>
         )}
 

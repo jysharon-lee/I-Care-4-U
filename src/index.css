@@ -48,6 +48,20 @@ button {
   font-family: inherit;
 }
 
+.btn-primary {
+  background: #5A9DD6;
+  color: #fff;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: background-color 0.2s, transform 0.2s;
+}
+.btn-primary:hover {
+  background: #7DB5E2;
+  transform: translateY(-2px);
+}
+
 /* Utilities */
 .container {
   max-width: 1200px;
