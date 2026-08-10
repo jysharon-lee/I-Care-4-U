@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { supabase } from '../supabaseClient';
 import { ReactSketchCanvas } from 'react-sketch-canvas';
 import { 
-  FcLike, FcVideoCall, FcMusic, FcGift, FcLikePlaceholder, FcReading, FcBiotech, FcHeadset, FcIdea 
+  FcLike, FcVideoCall, FcMusic, FcPackage, FcLikePlaceholder, FcReading, FcBiotech, FcHeadset, FcIdea 
 } from 'react-icons/fc';
 import { ArrowLeft, Copy, CheckCircle, UploadCloud, Eraser, PenTool } from 'lucide-react';
 import '../envelope.css';
@@ -15,10 +15,10 @@ const ITEMS_DB = {
     { id: 'pill', label: 'Medicine', icon: FcBiotech },
     { id: 'love', label: 'Much Love', icon: FcLike },
     { id: 'tea', label: 'Herbal Tea', icon: FcIdea },
-    { id: 'gift', label: 'Surprise', icon: FcGift },
+    { id: 'gift', label: 'Surprise', icon: FcPackage },
   ],
   care4u: [
-    { id: 'gift', label: 'Surprise Gift', icon: FcGift },
+    { id: 'gift', label: 'Surprise Gift', icon: FcPackage },
     { id: 'music', label: 'Mixtape', icon: FcHeadset },
     { id: 'book', label: 'Good Book', icon: FcReading },
     { id: 'love', label: 'Hugs', icon: FcLike },
@@ -42,6 +42,7 @@ export default function BoxBuilder() {
   });
 
   const [mediaFile, setMediaFile] = useState(null);
+  const [mediaUrlInput, setMediaUrlInput] = useState('');
   const canvasRef = useRef(null);
 
   const availableItems = ITEMS_DB[type] || ITEMS_DB.care4u;
@@ -108,7 +109,8 @@ export default function BoxBuilder() {
       const mediaObj = {
         drawing: drawingData,
         fileUrl: mediaUrl,
-        fileType: mediaType
+        fileType: mediaType,
+        externalUrl: mediaUrlInput
       };
 
       // 3. Save to DB
@@ -161,7 +163,7 @@ export default function BoxBuilder() {
       {shareLink ? (
         <motion.div initial={{opacity:0, scale: 0.9}} animate={{opacity:1, scale: 1}} style={{textAlign: 'center', maxWidth: '500px', margin: '0 auto', background: '#fff', padding: '2rem', borderRadius: '16px', boxShadow: '0 10px 30px rgba(0,0,0,0.1)'}}>
           <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: '#e07a5f', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
-            <FcGift size={50} />
+            <FcPackage size={50} />
           </div>
           <h2 style={{color: '#253237', marginBottom: '1rem'}}>Package is Sealed & Ready!</h2>
           <p style={{color: '#5c6b73', marginBottom: '2rem'}}>
@@ -229,9 +231,8 @@ export default function BoxBuilder() {
               )}
 
               {activeTab === 'upload' && (
-                <div style={{height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem'}}>
-                  <FcMusic size={60} />
-                  <p style={{color: '#666', textAlign: 'center'}}>Upload a voice memo or a short video clip to make it personal.</p>
+                <div style={{height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}>
+                  <p style={{color: '#666', textAlign: 'center', marginTop: '1rem'}}>Upload a voice memo or video clip, OR paste a link from YouTube/Spotify!</p>
                   
                   <label style={{
                     display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: '#fff', border: '2px solid #5A9DD6', color: '#5A9DD6', padding: '0.8rem 1.5rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold'
@@ -240,6 +241,16 @@ export default function BoxBuilder() {
                     {mediaFile ? mediaFile.name : 'Choose File (Audio/Video)'}
                     <input type="file" accept="audio/*,video/*" style={{display: 'none'}} onChange={(e) => setMediaFile(e.target.files[0])} />
                   </label>
+
+                  <span style={{color: '#aaa', fontWeight: 'bold'}}>— OR —</span>
+
+                  <input 
+                    type="url" 
+                    placeholder="Paste YouTube, Spotify, or TikTok link here" 
+                    value={mediaUrlInput}
+                    onChange={(e) => setMediaUrlInput(e.target.value)}
+                    style={{width: '100%', padding: '0.8rem', border: '1px solid #ccc', borderRadius: '8px', fontSize: '1rem', background: '#fff'}}
+                  />
                   
                   <div style={{marginTop: 'auto', alignSelf: 'stretch', display: 'flex', justifyContent: 'flex-end'}}>
                     <button className="btn-primary" onClick={() => setActiveTab('goodies')} style={{padding: '0.5rem 1.5rem'}}>Next</button>

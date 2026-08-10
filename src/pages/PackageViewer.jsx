@@ -2,15 +2,16 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../supabaseClient';
+import ReactPlayer from 'react-player';
 import { 
-  FcLike, FcVideoCall, FcMusic, FcGift, FcLikePlaceholder, FcReading, FcBiotech, FcHeadset, FcIdea 
+  FcLike, FcVideoCall, FcMusic, FcPackage, FcLikePlaceholder, FcReading, FcBiotech, FcHeadset, FcIdea 
 } from 'react-icons/fc';
 import { ArrowLeft } from 'lucide-react';
 import '../envelope.css';
 
 const ICON_MAP = {
   soup: FcLikePlaceholder, pill: FcBiotech, love: FcLike,
-  tea: FcIdea, cookie: FcGift, gift: FcGift,
+  tea: FcIdea, cookie: FcPackage, gift: FcPackage,
   music: FcHeadset, book: FcReading, movie: FcVideoCall
 };
 
@@ -94,6 +95,18 @@ export default function PackageViewer() {
                 ) : (
                   <audio src={media.fileUrl} controls style={{width: '100%'}} />
                 )}
+              </div>
+            )}
+
+            {media.externalUrl && (
+              <div style={{marginBottom: '2rem', padding: '1rem', background: '#f9f9f9', borderRadius: '12px', textAlign: 'center'}}>
+                <h4 style={{marginBottom: '1rem', color: '#555'}}>Shared Link</h4>
+                <div style={{ borderRadius: '8px', overflow: 'hidden' }}>
+                  <ReactPlayer url={media.externalUrl} width="100%" height="200px" controls />
+                </div>
+                <a href={media.externalUrl} target="_blank" rel="noreferrer" style={{display: 'block', marginTop: '1rem', fontSize: '0.9rem', color: '#5A9DD6', textDecoration: 'underline'}}>
+                  Open Link directly
+                </a>
               </div>
             )}
 
