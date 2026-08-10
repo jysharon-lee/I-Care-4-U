@@ -80,20 +80,23 @@
 }
 
 .envelope-wrapper.open .card-letter {
-  transform: translateY(-200px);
+  transform: translateY(-100px); /* Slide up just enough to reach the top of the wrapper */
   z-index: 5; /* Pop out in front of the front flaps */
   bottom: 0;
   height: 500px; /* expand to show full letter */
   box-shadow: 0 20px 40px rgba(0,0,0,0.15);
 }
 
-.envelope-wrapper.viewer.open .card-letter {
-    transform: translateY(0);
-    position: relative;
-    z-index: 5;
-    height: auto;
-    min-height: 500px;
-    margin-top: -100px; /* pull it out completely */
+/* Custom scrollbar for the card to make it look nicer */
+.card-letter::-webkit-scrollbar {
+  width: 8px;
+}
+.card-letter::-webkit-scrollbar-track {
+  background: transparent; 
+}
+.card-letter::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.1); 
+  border-radius: 4px;
 }
 
 .stamp {

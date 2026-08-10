@@ -4,25 +4,25 @@ import { motion } from 'framer-motion';
 import { supabase } from '../supabaseClient';
 import { ReactSketchCanvas } from 'react-sketch-canvas';
 import { 
-  FcLike, FcVideoCall, FcMusic, FcPackage, FcLikePlaceholder, FcReading, FcBiotech, FcHeadset, FcIdea 
-} from 'react-icons/fc';
-import { ArrowLeft, Copy, CheckCircle, UploadCloud, Eraser, PenTool } from 'lucide-react';
+  ArrowLeft, Copy, CheckCircle, UploadCloud, Eraser, PenTool,
+  Soup, Pill, Heart, Coffee, Gift, Headphones, Book, Clapperboard
+} from 'lucide-react';
 import '../envelope.css';
 
 const ITEMS_DB = {
   getwellsoon: [
-    { id: 'soup', label: 'Hot Soup', icon: FcLikePlaceholder },
-    { id: 'pill', label: 'Medicine', icon: FcBiotech },
-    { id: 'love', label: 'Much Love', icon: FcLike },
-    { id: 'tea', label: 'Herbal Tea', icon: FcIdea },
-    { id: 'gift', label: 'Surprise', icon: FcPackage },
+    { id: 'soup', label: 'Hot Soup', icon: Soup, color: '#E07A5F', bg: '#FAD4C0' },
+    { id: 'pill', label: 'Medicine', icon: Pill, color: '#81B29A', bg: '#D1E8DD' },
+    { id: 'love', label: 'Much Love', icon: Heart, color: '#E56B6F', bg: '#FAD1D2' },
+    { id: 'tea', label: 'Herbal Tea', icon: Coffee, color: '#D4A373', bg: '#F2E3D5' },
+    { id: 'gift', label: 'Surprise', icon: Gift, color: '#F4A261', bg: '#FCE1C6' },
   ],
   care4u: [
-    { id: 'gift', label: 'Surprise Gift', icon: FcPackage },
-    { id: 'music', label: 'Mixtape', icon: FcHeadset },
-    { id: 'book', label: 'Good Book', icon: FcReading },
-    { id: 'love', label: 'Hugs', icon: FcLike },
-    { id: 'movie', label: 'Movie Night', icon: FcVideoCall },
+    { id: 'gift', label: 'Surprise Gift', icon: Gift, color: '#F4A261', bg: '#FCE1C6' },
+    { id: 'music', label: 'Mixtape', icon: Headphones, color: '#3D5A80', bg: '#D0DDF0' },
+    { id: 'book', label: 'Good Book', icon: Book, color: '#98C1D9', bg: '#DFF1FA' },
+    { id: 'love', label: 'Hugs', icon: Heart, color: '#E56B6F', bg: '#FAD1D2' },
+    { id: 'movie', label: 'Movie Night', icon: Clapperboard, color: '#293241', bg: '#D9DEE6' },
   ]
 };
 
@@ -163,7 +163,7 @@ export default function BoxBuilder() {
       {shareLink ? (
         <motion.div initial={{opacity:0, scale: 0.9}} animate={{opacity:1, scale: 1}} style={{textAlign: 'center', maxWidth: '500px', margin: '0 auto', background: '#fff', padding: '2rem', borderRadius: '16px', boxShadow: '0 10px 30px rgba(0,0,0,0.1)'}}>
           <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: '#e07a5f', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
-            <FcPackage size={50} />
+            <Gift size={40} />
           </div>
           <h2 style={{color: '#253237', marginBottom: '1rem'}}>Package is Sealed & Ready!</h2>
           <p style={{color: '#5c6b73', marginBottom: '2rem'}}>
@@ -193,94 +193,88 @@ export default function BoxBuilder() {
                 <button className={activeTab === 'goodies' ? 'active' : ''} onClick={() => setActiveTab('goodies')}>Goodies</button>
               </div>
 
-              {activeTab === 'write' && (
-                <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
-                  <div style={{display: 'flex', gap: '1rem'}}>
-                    <input type="text" placeholder="To:" value={formData.to_name} onChange={e => setFormData({...formData, to_name: e.target.value})} style={{border: 'none', borderBottom: '1px dashed #ccc', background: 'transparent', fontSize: '1.2rem', padding: '0.5rem', width: '100%'}} />
-                    <input type="text" placeholder="From:" value={formData.from_name} onChange={e => setFormData({...formData, from_name: e.target.value})} style={{border: 'none', borderBottom: '1px dashed #ccc', background: 'transparent', fontSize: '1.2rem', padding: '0.5rem', width: '100%'}} />
-                  </div>
-                  <textarea 
-                    className="handwriting"
-                    placeholder="Write a sweet message..." 
-                    value={formData.message}
-                    onChange={e => setFormData({...formData, message: e.target.value})}
-                    style={{width: '100%', height: '180px', border: 'none', background: 'transparent', resize: 'none', marginTop: '1rem', outline: 'none'}}
+              <div style={{display: activeTab === 'write' ? 'flex' : 'none', flexDirection: 'column', gap: '1rem'}}>
+                <div style={{display: 'flex', gap: '1rem'}}>
+                  <input type="text" placeholder="To:" value={formData.to_name} onChange={e => setFormData({...formData, to_name: e.target.value})} style={{border: 'none', borderBottom: '1px dashed #ccc', background: 'transparent', fontSize: '1.2rem', padding: '0.5rem', width: '100%'}} />
+                  <input type="text" placeholder="From:" value={formData.from_name} onChange={e => setFormData({...formData, from_name: e.target.value})} style={{border: 'none', borderBottom: '1px dashed #ccc', background: 'transparent', fontSize: '1.2rem', padding: '0.5rem', width: '100%'}} />
+                </div>
+                <textarea 
+                  className="handwriting"
+                  placeholder="Write a sweet message..." 
+                  value={formData.message}
+                  onChange={e => setFormData({...formData, message: e.target.value})}
+                  style={{width: '100%', height: '180px', border: 'none', background: 'transparent', resize: 'none', marginTop: '1rem', outline: 'none'}}
+                />
+                <button className="btn-primary" onClick={() => setActiveTab('draw')} style={{alignSelf: 'flex-end', padding: '0.5rem 1.5rem'}}>Next</button>
+              </div>
+
+              <div style={{display: activeTab === 'draw' ? 'flex' : 'none', height: '100%', flexDirection: 'column'}}>
+                <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem'}}>
+                  <span style={{color: '#888'}}>Doodle something!</span>
+                  <button onClick={() => canvasRef.current?.clearPaths()} style={{color: '#e07a5f', display: 'flex', gap: '0.5rem', alignItems: 'center'}}>
+                    <Eraser size={16}/> Clear
+                  </button>
+                </div>
+                <div style={{flex: 1, border: '2px dashed #e0e0e0', borderRadius: '8px', overflow: 'hidden', marginBottom: '1rem'}}>
+                  <ReactSketchCanvas
+                    ref={canvasRef}
+                    strokeWidth={4}
+                    strokeColor="#2b2b2b"
+                    canvasColor="transparent"
                   />
-                  <button className="btn-primary" onClick={() => setActiveTab('draw')} style={{alignSelf: 'flex-end', padding: '0.5rem 1.5rem'}}>Next</button>
                 </div>
-              )}
+                <button className="btn-primary" onClick={() => setActiveTab('upload')} style={{alignSelf: 'flex-end', padding: '0.5rem 1.5rem'}}>Next</button>
+              </div>
 
-              {activeTab === 'draw' && (
-                <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
-                  <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem'}}>
-                    <span style={{color: '#888'}}>Doodle something!</span>
-                    <button onClick={() => canvasRef.current?.clearPaths()} style={{color: '#e07a5f', display: 'flex', gap: '0.5rem', alignItems: 'center'}}>
-                      <Eraser size={16}/> Clear
-                    </button>
-                  </div>
-                  <div style={{flex: 1, border: '2px dashed #e0e0e0', borderRadius: '8px', overflow: 'hidden', marginBottom: '1rem'}}>
-                    <ReactSketchCanvas
-                      ref={canvasRef}
-                      strokeWidth={4}
-                      strokeColor="#2b2b2b"
-                      canvasColor="transparent"
-                    />
-                  </div>
-                  <button className="btn-primary" onClick={() => setActiveTab('upload')} style={{alignSelf: 'flex-end', padding: '0.5rem 1.5rem'}}>Next</button>
+              <div style={{display: activeTab === 'upload' ? 'flex' : 'none', height: '100%', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}>
+                <p style={{color: '#666', textAlign: 'center', marginTop: '1rem'}}>Upload a voice memo or video clip, OR paste a link from YouTube/Spotify!</p>
+                
+                <label style={{
+                  display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: '#fff', border: '2px solid #5A9DD6', color: '#5A9DD6', padding: '0.8rem 1.5rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold'
+                }}>
+                  <UploadCloud size={20} />
+                  {mediaFile ? mediaFile.name : 'Choose File (Audio/Video)'}
+                  <input type="file" accept="audio/*,video/*" style={{display: 'none'}} onChange={(e) => setMediaFile(e.target.files[0])} />
+                </label>
+
+                <span style={{color: '#aaa', fontWeight: 'bold'}}>— OR —</span>
+
+                <input 
+                  type="url" 
+                  placeholder="Paste YouTube, Spotify, or TikTok link here" 
+                  value={mediaUrlInput}
+                  onChange={(e) => setMediaUrlInput(e.target.value)}
+                  style={{width: '100%', padding: '0.8rem', border: '1px solid #ccc', borderRadius: '8px', fontSize: '1rem', background: '#fff'}}
+                />
+                
+                <div style={{marginTop: 'auto', alignSelf: 'stretch', display: 'flex', justifyContent: 'flex-end'}}>
+                  <button className="btn-primary" onClick={() => setActiveTab('goodies')} style={{padding: '0.5rem 1.5rem'}}>Next</button>
                 </div>
-              )}
+              </div>
 
-              {activeTab === 'upload' && (
-                <div style={{height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}>
-                  <p style={{color: '#666', textAlign: 'center', marginTop: '1rem'}}>Upload a voice memo or video clip, OR paste a link from YouTube/Spotify!</p>
-                  
-                  <label style={{
-                    display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: '#fff', border: '2px solid #5A9DD6', color: '#5A9DD6', padding: '0.8rem 1.5rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold'
-                  }}>
-                    <UploadCloud size={20} />
-                    {mediaFile ? mediaFile.name : 'Choose File (Audio/Video)'}
-                    <input type="file" accept="audio/*,video/*" style={{display: 'none'}} onChange={(e) => setMediaFile(e.target.files[0])} />
-                  </label>
-
-                  <span style={{color: '#aaa', fontWeight: 'bold'}}>— OR —</span>
-
-                  <input 
-                    type="url" 
-                    placeholder="Paste YouTube, Spotify, or TikTok link here" 
-                    value={mediaUrlInput}
-                    onChange={(e) => setMediaUrlInput(e.target.value)}
-                    style={{width: '100%', padding: '0.8rem', border: '1px solid #ccc', borderRadius: '8px', fontSize: '1rem', background: '#fff'}}
-                  />
-                  
-                  <div style={{marginTop: 'auto', alignSelf: 'stretch', display: 'flex', justifyContent: 'flex-end'}}>
-                    <button className="btn-primary" onClick={() => setActiveTab('goodies')} style={{padding: '0.5rem 1.5rem'}}>Next</button>
-                  </div>
+              <div style={{display: activeTab === 'goodies' ? 'flex' : 'none', height: '100%', flexDirection: 'column'}}>
+                <p style={{color: '#666', marginBottom: '1rem'}}>Select up to 4 virtual goodies to pack.</p>
+                
+                <div className="sticker-grid">
+                  {availableItems.map(item => {
+                    const isSelected = formData.items.includes(item.id);
+                    return (
+                      <button key={item.id} className={`sticker-item ${isSelected ? 'selected' : ''}`} onClick={() => handleItemToggle(item.id)}>
+                        <div style={{ backgroundColor: item.bg, color: item.color, padding: '1rem', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <item.icon size={32} />
+                        </div>
+                        <span style={{fontSize: '0.8rem', marginTop: '0.5rem', color: '#555', fontWeight: 500}}>{item.label}</span>
+                      </button>
+                    )
+                  })}
                 </div>
-              )}
 
-              {activeTab === 'goodies' && (
-                <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
-                  <p style={{color: '#666', marginBottom: '1rem'}}>Select up to 4 virtual goodies to pack.</p>
-                  
-                  <div className="sticker-grid">
-                    {availableItems.map(item => {
-                      const isSelected = formData.items.includes(item.id);
-                      return (
-                        <button key={item.id} className={`sticker-item ${isSelected ? 'selected' : ''}`} onClick={() => handleItemToggle(item.id)}>
-                          <item.icon size={48} />
-                          <span style={{fontSize: '0.8rem', marginTop: '0.5rem', color: '#555', fontWeight: 500}}>{item.label}</span>
-                        </button>
-                      )
-                    })}
-                  </div>
-
-                  <div style={{marginTop: 'auto', alignSelf: 'stretch', display: 'flex', justifyContent: 'center'}}>
-                    <button className="btn-primary" onClick={handleGenerate} disabled={loading} style={{width: '100%', padding: '1rem', fontSize: '1.2rem', marginTop: '1rem', backgroundColor: '#e07a5f'}}>
-                      {loading ? 'Sealing Envelope...' : 'Seal & Generate Link'}
-                    </button>
-                  </div>
+                <div style={{marginTop: 'auto', alignSelf: 'stretch', display: 'flex', justifyContent: 'center'}}>
+                  <button className="btn-primary" onClick={handleGenerate} disabled={loading} style={{width: '100%', padding: '1rem', fontSize: '1.2rem', marginTop: '1rem', backgroundColor: '#e07a5f'}}>
+                    {loading ? 'Sealing Envelope...' : 'Seal & Generate Link'}
+                  </button>
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </div>
