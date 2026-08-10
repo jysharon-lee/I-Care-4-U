@@ -25,7 +25,7 @@ const doors = [
     desc: 'Send virtual soup & medicine.',
     icon: HeartPulse,
     colorClass: 'getwell',
-    link: '/get-well'
+    link: '/build-package/getwellsoon'
   },
   {
     id: 'care4u',
@@ -33,7 +33,7 @@ const doors = [
     desc: 'Tuck goodies into a digital box.',
     icon: Gift,
     colorClass: 'care4u',
-    link: '/care4u'
+    link: '/build-package/care4u'
   }
 ];
 
