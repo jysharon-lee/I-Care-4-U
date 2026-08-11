@@ -1,22 +1,46 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Copy, Check, ArrowLeft } from 'lucide-react';
+import { Copy, Check, ArrowLeft, Loader2 } from 'lucide-react';
+import { supabase } from '../supabaseClient';
 
 export default function PlanHangout() {
   const [formData, setFormData] = useState({ to: '', from: '', email: '' });
   const [generatedLink, setGeneratedLink] = useState('');
   const [copied, setCopied] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleGenerate = (e) => {
+  const handleGenerate = async (e) => {
     e.preventDefault();
     if (!formData.to || !formData.from || !formData.email) return;
 
-    // Basic Base64 encoding to prevent the email from being plain text in the URL
-    // (This is not encryption, just slight obfuscation for client-side URL params)
-    const encodedData = btoa(JSON.stringify(formData));
-    const link = `${window.location.origin}/hangout-invite?data=${encodedData}`;
-    setGeneratedLink(link);
+    setLoading(true);
+    setError('');
+
+    try {
+      const { data, error: sbError } = await supabase
+        .from('packages')
+        .insert([
+          {
+            type: 'hangout',
+            to_name: formData.to,
+            from_name: formData.from,
+            media: { email: formData.email } // store email in media jsonb
+          }
+        ])
+        .select()
+        .single();
+
+      if (sbError) throw sbError;
+      
+      const link = `${window.location.origin}/hangout-invite/${data.id}`;
+      setGeneratedLink(link);
+    } catch (err) {
+      setError(err.message || "Failed to create hangout link.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCopy = () => {
@@ -75,8 +99,10 @@ export default function PlanHangout() {
                 <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>We use EmailJS to securely email you their responses. We don't save this email.</p>
               </div>
 
-              <button type="submit" className="btn-primary" style={{ marginTop: '1rem', width: '100%' }}>
-                Generate Link
+              {error && <p style={{ color: '#e07a5f', fontSize: '0.9rem' }}>{error}</p>}
+
+              <button type="submit" className="btn-primary" style={{ marginTop: '1rem', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }} disabled={loading}>
+                {loading ? <Loader2 className="spinner" size={20} /> : 'Generate Link'}
               </button>
             </form>
           ) : (

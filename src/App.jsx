@@ -11,7 +11,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/plan-hangout" element={<PlanHangout />} />
-      <Route path="/hangout-invite" element={<HangoutInvitation />} />
+      <Route path="/hangout-invite/:id" element={<HangoutInvitation />} />
       <Route path="/build-package/:type" element={<BoxBuilder />} />
       <Route path="/package/:id" element={<PackageViewer />} />
       <Route path="/rage-room" element={<RageRoom />} />

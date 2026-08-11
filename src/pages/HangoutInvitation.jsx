@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import emailjs from '@emailjs/browser';
+import { supabase } from '../supabaseClient';
 import { 
   Heart, Calendar, Clock, MessageSquare, CheckCircle, 
   Film, TreePine, ShoppingBag, Dumbbell, UtensilsCrossed, 
@@ -30,9 +31,10 @@ const FOODS = [
 ];
 
 export default function HangoutInvitation() {
-  const [searchParams] = useSearchParams();
+  const { id } = useParams();
   const [invitation, setInvitation] = useState(null);
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
   
   const [step, setStep] = useState(0);
   const [noButtonPosition, setNoButtonPosition] = useState({ x: 0, y: 0 });
@@ -50,18 +52,36 @@ export default function HangoutInvitation() {
   });
 
   useEffect(() => {
-    try {
-      const data = searchParams.get('data');
-      if (data) {
-        const decoded = JSON.parse(atob(data));
-        setInvitation(decoded);
-      } else {
+    async function fetchInvitation() {
+      if (!id) {
         setError(true);
+        setLoading(false);
+        return;
       }
-    } catch (e) {
-      setError(true);
+      try {
+        const { data, error: sbError } = await supabase
+          .from('packages')
+          .select('*')
+          .eq('id', id)
+          .single();
+        
+        if (sbError || !data || data.type !== 'hangout') {
+          throw new Error('Not found');
+        }
+        
+        setInvitation({
+          to: data.to_name,
+          from: data.from_name,
+          email: data.media?.email
+        });
+      } catch (e) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
     }
-  }, [searchParams]);
+    fetchInvitation();
+  }, [id]);
 
   const handleNoHover = () => {
     // Generate coordinates that are far away from the center "Yes" button
@@ -109,12 +129,21 @@ export default function HangoutInvitation() {
     ).then((response) => {
       console.log('Email sent successfully!', response.status, response.text);
     }).catch((err) => {
-      alert("EmailJS Error: Please check your console or your .env.local keys. Error: " + (err.text || err.message || JSON.stringify(err)));
-      console.error('Failed to send email...', err);
+      console.error(err);
+      alert('Oops! Something went wrong sending the email. But we still got your plan!');
+      setStep(5);
     });
   };
 
-  if (error) {
+  if (loading) {
+    return (
+      <div className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <p style={{ color: 'var(--text-secondary)' }}>Loading invitation...</p>
+      </div>
+    );
+  }
+
+  if (error || !invitation) {
     return (
       <div className="container" style={{ textAlign: 'center', marginTop: '4rem' }}>
         <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '3rem', color: '#FF6B6B' }}>Oops!</h1>
