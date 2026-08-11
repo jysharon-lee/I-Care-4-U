@@ -1,16 +1,32 @@
-# React + Vite
+# ICare4U 🎁
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A modern, interactive web application built with React and Vite that allows you to create highly personalized digital care packages, plan fun hangouts, and even let off steam in a digital Rage Room. 
 
-Currently, two official plugins are available:
+** Live Demo**: [https://icare4u-weld.vercel.app](https://icare4u-weld.vercel.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+* **📦 Digital Care Packages**: Build a custom care package with a personalized letter, hand-drawn doodles, photo memories (with captions!), stickers, and voice/video notes.
+* **🗓️ Plan a Hangout**: Generate interactive invitations for dates or hangouts. Send the short link and let your friend pick the time, activity, and food! Responses are automatically emailed back to you.
+* **🔨 Rage Room**: A 2D physics-based mini-game (powered by `matter-js`). Upload a photo of someone or something that frustrated you onto the ragdoll, and throw plates, glasses, and monitors around to relieve stress with satisfying shattering physics and sound effects.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+##  Tech Stack
 
-## Expanding the Oxlint configuration
+* **Frontend**: React (Vite)
+* **Styling**: Vanilla CSS (Tailwind was strictly avoided per design philosophy to ensure unique, cozy, and warm aesthetics).
+* **Animations**: Framer Motion
+* **Physics Engine**: Matter.js
+* **Backend / Storage**: Supabase (Database + Storage for user media and drawings)
+* **Email Service**: EmailJS
+* **Routing**: React Router DOM
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+##  Design Philosophy
+
+ICare4U was designed to feel **warm, cozy, fun, and premium**. 
+* **No generic emojis or boring icons.**
+* **Rich Aesthetics**: Soft colors, glassmorphism, smooth micro-animations, and dynamic interactions.
+* **Playful Physics**: The rage room mini-game allows for drag-and-drop physics, collision detection, and dynamic shattering polygons.
+
+##  License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
