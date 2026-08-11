@@ -182,8 +182,10 @@ export default function RageRoom() {
     if (head) {
       head.render.sprite = {
         texture: faceUrl,
-        xScale: 60 / 200, // Approximate scaling to fit 60px diameter (assuming 200x200 upload)
-        yScale: 60 / 200
+        xScale: 60 / 200,
+        yScale: 60 / 200,
+        xOffset: 0.5,
+        yOffset: 0.5
       };
     }
   }, [faceUrl]);
@@ -277,7 +279,12 @@ export default function RageRoom() {
           const y = (img.height - size) / 2;
           ctx.drawImage(img, x, y, size, size, 0, 0, 200, 200);
           
-          setFaceUrl(canvas.toDataURL('image/png'));
+          canvas.toBlob((blob) => {
+            if (blob) {
+              const url = URL.createObjectURL(blob);
+              setFaceUrl(url);
+            }
+          }, 'image/png');
         };
         img.src = event.target.result;
       };

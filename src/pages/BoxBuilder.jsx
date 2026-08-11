@@ -235,7 +235,7 @@ export default function BoxBuilder() {
   return (
     <div style={{ minHeight: '100vh', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <header style={{ width: '100%', maxWidth: '800px', display: 'flex', alignItems: 'center', marginBottom: '30px' }}>
-        <Link to="/templates" style={{ color: '#2b2b2b', display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none', fontWeight: '500' }}>
+        <Link to="/" style={{ color: '#2b2b2b', display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none', fontWeight: '500' }}>
           <ArrowLeft size={20} /> Back
         </Link>
       </header>

@@ -20,14 +20,6 @@ const doors = [
     link: '/plan-hangout'
   },
   {
-    id: 'getwell',
-    title: 'Get Well Soon Kit',
-    desc: 'Send virtual soup & medicine.',
-    icon: HeartPulse,
-    colorClass: 'getwell',
-    link: '/build-package/getwellsoon'
-  },
-  {
     id: 'care4u',
     title: 'Care4U Package',
     desc: 'Tuck goodies into a digital box.',
