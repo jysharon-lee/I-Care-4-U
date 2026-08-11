@@ -101,6 +101,11 @@ export default function BoxBuilder() {
   };
 
   const handleGenerate = async () => {
+    if (!formData.to_name || !formData.from_name) {
+      alert("Please fill in who this is to and from!");
+      setActiveTab('write');
+      return;
+    }
     setLoading(true);
     let mediaUrl = null;
     let mediaType = null;
@@ -126,7 +131,7 @@ export default function BoxBuilder() {
           .from('package-media')
           .upload(fileName, mediaFile);
 
-        if (uploadError) throw uploadError;
+        if (uploadError) throw new Error("Storage (Media): " + uploadError.message);
 
         const { data: { publicUrl } } = supabase.storage
           .from('package-media')
@@ -144,7 +149,7 @@ export default function BoxBuilder() {
           .from('package-media')
           .upload(fileName, file);
 
-        if (uploadError) throw uploadError;
+        if (uploadError) throw new Error("Storage (Photo): " + uploadError.message);
 
         const { data: { publicUrl } } = supabase.storage
           .from('package-media')
@@ -174,7 +179,7 @@ export default function BoxBuilder() {
         ])
         .select();
 
-      if (error) throw error;
+      if (error) throw new Error("Database: " + error.message);
 
       if (data && data[0]) {
         const link = `${window.location.origin}/package/${data[0].id}`;
@@ -182,7 +187,7 @@ export default function BoxBuilder() {
       }
     } catch (error) {
       console.error('Error generating package:', error.message);
-      alert('Error creating your package. Please try again.');
+      alert('Error creating your package: ' + error.message);
     } finally {
       setLoading(false);
     }
@@ -327,13 +332,14 @@ export default function BoxBuilder() {
             </button>
           </div>
           
-          <div style={{ flex: 1, border: '1px dashed #ccc', borderRadius: '12px', overflow: 'hidden', minHeight: '400px' }}>
+          <div style={{ position: 'relative', height: '400px', border: '1px dashed #ccc', borderRadius: '12px', overflow: 'hidden' }}>
             <ReactSketchCanvas
               ref={canvasRef}
               strokeWidth={4}
               strokeColor={strokeColor}
               canvasColor="transparent"
-              style={{ width: '100%', height: '100%' }}
+              width="100%"
+              height="100%"
             />
           </div>
           
