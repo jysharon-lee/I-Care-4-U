@@ -31,6 +31,7 @@ export default function BoxBuilder() {
   const [mediaUrlInput, setMediaUrlInput] = useState('');
   const [photoFiles, setPhotoFiles] = useState([]);
   const [photoPreviews, setPhotoPreviews] = useState([]);
+  const [photoCaptions, setPhotoCaptions] = useState([]);
   const canvasRef = useRef(null);
   const [activeTab, setActiveTab] = useState('write');
   const [loading, setLoading] = useState(false);
@@ -67,9 +68,11 @@ export default function BoxBuilder() {
       const filesArray = Array.from(e.target.files);
       const newFiles = [...photoFiles, ...filesArray].slice(0, 6);
       const newPreviews = newFiles.map(file => URL.createObjectURL(file));
+      const newCaptions = [...photoCaptions, ...new Array(filesArray.length).fill('')].slice(0, 6);
       
       setPhotoFiles(newFiles);
       setPhotoPreviews(newPreviews);
+      setPhotoCaptions(newCaptions);
     }
   };
 
@@ -81,6 +84,10 @@ export default function BoxBuilder() {
     const newPreviews = [...photoPreviews];
     newPreviews.splice(index, 1);
     setPhotoPreviews(newPreviews);
+
+    const newCaptions = [...photoCaptions];
+    newCaptions.splice(index, 1);
+    setPhotoCaptions(newCaptions);
   };
 
   const handleMediaUpload = (e) => {
@@ -141,8 +148,9 @@ export default function BoxBuilder() {
         mediaType = mediaFile.type.startsWith('video') ? 'video' : 'audio';
       }
 
-      const photoUrls = [];
-      for (const file of photoFiles) {
+      const photoObjects = [];
+      for (let i = 0; i < photoFiles.length; i++) {
+        const file = photoFiles[i];
         const fileExt = file.name.split('.').pop();
         const fileName = `${Math.random()}.${fileExt}`;
         const { error: uploadError } = await supabase.storage
@@ -154,7 +162,7 @@ export default function BoxBuilder() {
         const { data: { publicUrl } } = supabase.storage
           .from('package-media')
           .getPublicUrl(fileName);
-        photoUrls.push(publicUrl);
+        photoObjects.push({ url: publicUrl, caption: photoCaptions[i] || '' });
       }
 
       const mediaObj = {
@@ -162,7 +170,7 @@ export default function BoxBuilder() {
         fileUrl: mediaUrl,
         fileType: mediaType,
         externalUrl: mediaUrlInput,
-        photos: photoUrls
+        photos: photoObjects
       };
 
       const { data, error } = await supabase
@@ -355,14 +363,27 @@ export default function BoxBuilder() {
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px', marginBottom: '20px' }}>
             {photoPreviews.map((preview, index) => (
-              <div key={index} style={{ position: 'relative', aspectRatio: '1', width: '100%' }}>
-                <img src={preview} alt={`preview ${index}`} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />
-                <button 
-                  onClick={() => handleRemovePhoto(index)}
-                  style={{ position: 'absolute', top: '5px', right: '5px', background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
-                >
-                  <X size={14} />
-                </button>
+              <div key={index} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ position: 'relative', aspectRatio: '1', width: '100%' }}>
+                  <img src={preview} alt={`preview ${index}`} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />
+                  <button 
+                    onClick={() => handleRemovePhoto(index)}
+                    style={{ position: 'absolute', top: '5px', right: '5px', background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+                <input 
+                  type="text" 
+                  value={photoCaptions[index] || ''}
+                  onChange={(e) => {
+                    const newCaptions = [...photoCaptions];
+                    newCaptions[index] = e.target.value;
+                    setPhotoCaptions(newCaptions);
+                  }}
+                  placeholder="Add a caption..."
+                  style={{ width: '100%', padding: '8px', fontSize: '0.85rem', border: '1px solid #ddd', borderRadius: '6px', outline: 'none' }}
+                />
               </div>
             ))}
             

@@ -61,8 +61,13 @@ export default function PackageViewer() {
   if (error || !pkg) {
     return (
       <div style={styles.container}>
-        <p style={{ fontFamily: 'Inter', fontSize: '1.2rem', color: '#e07a5f' }}>{error || 'Package not found'}</p>
-        <Link to="/" style={styles.linkButton}>Go Home</Link>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: 'center' }}>
+          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '2.5rem', color: '#333', marginBottom: '10px' }}>Oh no!</h1>
+          <p style={{ fontFamily: 'Inter', fontSize: '1.2rem', color: '#666', marginBottom: '30px' }}>
+            Oops! We couldn't find this package.<br/>It might have been lost in the mail. 💌
+          </p>
+          <Link to="/" style={{ ...styles.linkButton, display: 'inline-block', background: '#e07a5f', color: '#fff', padding: '12px 24px', borderRadius: '30px', textDecoration: 'none', fontWeight: '500' }}>Go back home</Link>
+        </motion.div>
       </div>
     );
   }
@@ -294,9 +299,21 @@ export default function PackageViewer() {
 
                 {expandedItem === 'photos' && media.photos && (
                   <div style={styles.photosGrid}>
-                    {media.photos.map((photoUrl, idx) => (
-                      <img key={idx} src={photoUrl} alt={`Photo ${idx+1}`} style={styles.expandedImg} />
-                    ))}
+                    {media.photos.map((photoData, idx) => {
+                      const isObject = typeof photoData === 'object' && photoData !== null;
+                      const url = isObject ? photoData.url : photoData;
+                      const caption = isObject ? photoData.caption : '';
+                      return (
+                        <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', background: '#fff', padding: '10px', paddingBottom: '20px', borderRadius: '8px', boxShadow: '0 4px 10px rgba(0,0,0,0.05)' }}>
+                          <img src={url} alt={`Photo ${idx+1}`} style={{ ...styles.expandedImg, marginBottom: 0 }} />
+                          {caption && (
+                            <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.2rem', color: '#444', margin: 0, textAlign: 'center', fontStyle: 'italic' }}>
+                              {caption}
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
 
