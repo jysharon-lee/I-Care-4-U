@@ -33,7 +33,7 @@ export default function PlanHangout() {
       
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="title-main" style={{ fontSize: '2.5rem' }}>Plan a Hangout</h1>
-        <p className="subtitle">Fill out the details below to generate a fun, interactive invitation link to send to your friend or crush.</p>
+        <p className="subtitle">Fill out the details below to generate a fun, interactive invitation link to send to that special person.</p>
 
         <div className="card" style={{ background: 'var(--card-bg)', padding: '2rem', borderRadius: '16px', boxShadow: 'var(--card-shadow)' }}>
           {!generatedLink ? (
