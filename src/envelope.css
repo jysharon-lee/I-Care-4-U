@@ -118,8 +118,11 @@
 /* Sticker/Icon styling */
 .sticker-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  overflow-y: auto;
+  max-height: 280px;
+  padding: 0.25rem;
 }
 .sticker-item {
   display: flex;
@@ -127,19 +130,20 @@
   align-items: center;
   justify-content: center;
   background: transparent;
-  border: none;
+  border: 3px solid transparent;
   cursor: pointer;
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: 12px;
-  transition: transform 0.2s, background-color 0.2s;
+  transition: transform 0.2s, border-color 0.2s, background-color 0.2s;
 }
 .sticker-item:hover {
   background-color: rgba(0,0,0,0.03);
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 .sticker-item.selected {
-  background-color: rgba(0,0,0,0.05);
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+  border-color: #e07a5f;
+  background-color: #fff5f2;
+  transform: scale(1.05);
 }
 
 .handwriting {
@@ -151,15 +155,17 @@
 
 .custom-tabs {
   display: flex;
-  gap: 1rem;
+  gap: 0.25rem;
   margin-bottom: 1rem;
   border-bottom: 2px solid #eee;
+  flex-wrap: wrap;
 }
 .custom-tabs button {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.6rem;
   border-bottom: 2px solid transparent;
   color: #888;
   font-weight: bold;
+  font-size: 0.85rem;
 }
 .custom-tabs button.active {
   color: var(--accent-blue);
