@@ -79,18 +79,16 @@ export default function RageRoom() {
     const armOptions = { collisionFilter: { group: group }, friction: 0.8, render: { fillStyle: '#e0cda7' } };
     const legOptions = { collisionFilter: { group: group }, friction: 0.8, render: { fillStyle: '#333' } };
 
-    const centerX = window.innerWidth / 2;
-
-    const head = Bodies.circle(centerX, 100, 30, headOptions);
-    const chest = Bodies.rectangle(centerX, 180, 60, 100, chestOptions);
-    const leftUpperArm = Bodies.rectangle(centerX - 60, 140, 20, 60, armOptions);
-    const rightUpperArm = Bodies.rectangle(centerX + 60, 140, 20, 60, armOptions);
-    const leftLowerArm = Bodies.rectangle(centerX - 60, 200, 15, 60, armOptions);
-    const rightLowerArm = Bodies.rectangle(centerX + 60, 200, 15, 60, armOptions);
-    const leftUpperLeg = Bodies.rectangle(centerX - 20, 260, 20, 60, legOptions);
-    const rightUpperLeg = Bodies.rectangle(centerX + 20, 260, 20, 60, legOptions);
-    const leftLowerLeg = Bodies.rectangle(centerX - 20, 320, 15, 60, legOptions);
-    const rightLowerLeg = Bodies.rectangle(centerX + 20, 320, 15, 60, legOptions);
+    const head = Bodies.circle(400, 100, 30, headOptions);
+    const chest = Bodies.rectangle(400, 180, 60, 100, chestOptions);
+    const leftUpperArm = Bodies.rectangle(340, 140, 20, 60, armOptions);
+    const rightUpperArm = Bodies.rectangle(460, 140, 20, 60, armOptions);
+    const leftLowerArm = Bodies.rectangle(340, 200, 15, 60, armOptions);
+    const rightLowerArm = Bodies.rectangle(460, 200, 15, 60, armOptions);
+    const leftUpperLeg = Bodies.rectangle(380, 260, 20, 60, legOptions);
+    const rightUpperLeg = Bodies.rectangle(420, 260, 20, 60, legOptions);
+    const leftLowerLeg = Bodies.rectangle(380, 320, 15, 60, legOptions);
+    const rightLowerLeg = Bodies.rectangle(420, 320, 15, 60, legOptions);
 
     const ragdoll = Composite.create({
       bodies: [head, chest, leftUpperArm, rightUpperArm, leftLowerArm, rightLowerArm, leftUpperLeg, rightUpperLeg, leftLowerLeg, rightLowerLeg],

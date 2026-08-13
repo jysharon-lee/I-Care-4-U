@@ -280,8 +280,8 @@ export default function BoxBuilder() {
         
         {/* WRITE TAB */}
         <div style={{ display: activeTab === 'write' ? 'flex' : 'none', flexDirection: 'column', gap: '20px', height: '100%' }}>
-          <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-            <div style={{ flex: '1 1 200px' }}>
+          <div style={{ display: 'flex', gap: '20px' }}>
+            <div style={{ flex: 1 }}>
               <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#444' }}>To</label>
               <input 
                 type="text" 
@@ -292,7 +292,7 @@ export default function BoxBuilder() {
                 style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #e0e0e0', fontSize: '1rem' }}
               />
             </div>
-            <div style={{ flex: '1 1 200px' }}>
+            <div style={{ flex: 1 }}>
               <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#444' }}>From</label>
               <input 
                 type="text" 
