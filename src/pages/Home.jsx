@@ -59,6 +59,15 @@ export default function Home() {
           </motion.div>
         ))}
       </div>
+      
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8, duration: 0.8 }}
+        style={{ marginTop: 'auto', paddingTop: '3rem', paddingBottom: '1rem', color: 'var(--text-secondary)', fontSize: '0.9rem', fontStyle: 'italic', textAlign: 'center', width: '100%' }}
+      >
+        developed by <a href="https://sharonlee-portfolio.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-secondary)', textDecoration: 'underline' }}>Sharon Lee</a> in 2026 
+      </motion.div>
     </div>
   );
 }
