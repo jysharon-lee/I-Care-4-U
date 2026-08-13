@@ -85,12 +85,15 @@ export default function HangoutInvitation() {
 
   const handleNoHover = () => {
     // Generate coordinates that are far away from the center "Yes" button
-    // Ensure the button moves between 150px and 350px away from its original spot
+    // Ensure the button stays within the screen width/height
+    const maxDistanceX = Math.min(window.innerWidth / 3, 150);
+    const maxDistanceY = Math.min(window.innerHeight / 3, 150);
+    
     const signX = Math.random() > 0.5 ? 1 : -1;
     const signY = Math.random() > 0.5 ? 1 : -1;
     
-    const x = signX * (150 + Math.random() * 200);
-    const y = signY * (150 + Math.random() * 200);
+    const x = signX * (50 + Math.random() * maxDistanceX);
+    const y = signY * (50 + Math.random() * maxDistanceY);
     
     setNoButtonPosition({ x, y });
     setNoCount(prev => prev + 1);
