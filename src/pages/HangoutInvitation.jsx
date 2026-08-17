@@ -72,7 +72,10 @@ export default function HangoutInvitation() {
         setInvitation({
           to: data.to_name,
           from: data.from_name,
-          email: data.media?.email
+          email: data.media?.email,
+          message: data.media?.message,
+          proposedDate: data.media?.proposedDate,
+          gifUrl: data.media?.gifUrl
         });
       } catch (e) {
         setError(true);
@@ -167,10 +170,19 @@ export default function HangoutInvitation() {
             exit={{ opacity: 0, y: -50 }}
             style={{ textAlign: 'center', position: 'relative' }}
           >
-            <Heart size={64} color="var(--accent-pink)" fill="var(--accent-pink)" style={{ margin: '0 auto 1.5rem' }} />
+            {invitation.gifUrl ? (
+              <img src={invitation.gifUrl} alt="GIF" style={{ width: '100%', maxWidth: '300px', borderRadius: '12px', margin: '0 auto 1.5rem', display: 'block' }} />
+            ) : (
+              <Heart size={64} color="var(--accent-pink)" fill="var(--accent-pink)" style={{ margin: '0 auto 1.5rem' }} />
+            )}
             <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '3rem', marginBottom: '1rem', lineHeight: '1.2' }}>
               Hi {invitation.to},<br/> {invitation.from} wants to ask you out!
             </h1>
+            {invitation.message && (
+              <p style={{ background: '#fff', padding: '1rem 1.5rem', borderRadius: '12px', color: '#444', fontStyle: 'italic', marginBottom: '1.5rem', display: 'inline-block', border: '1px solid #eee', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+                "{invitation.message}"
+              </p>
+            )}
             <p style={{ color: 'var(--text-secondary)', marginBottom: '3rem', fontSize: '1.2rem' }}>Will you go out with me?</p>
 
             <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', alignItems: 'center', height: '100px', position: 'relative' }}>
@@ -200,14 +212,38 @@ export default function HangoutInvitation() {
         {step === 1 && (
           <motion.div key="step1" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }}>
             <Calendar size={48} color="var(--accent-blue)" style={{ marginBottom: '1rem' }} />
-            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.5rem', marginBottom: '1.5rem' }}>I knew you would say yes! When are you free?</h2>
-            <input 
-              type="date" 
-              value={answers.date}
-              onChange={e => setAnswers({...answers, date: e.target.value})}
-              style={{ padding: '1rem', width: '100%', fontSize: '1.2rem', borderRadius: '12px', border: '2px solid var(--accent-blue)', marginBottom: '2rem', fontFamily: 'inherit' }}
-            />
-            <button onClick={handleNext} disabled={!answers.date} style={{ background: 'var(--text-primary)', color: '#fff', padding: '1rem 2rem', borderRadius: '8px', fontSize: '1.1rem', opacity: answers.date ? 1 : 0.5 }}>Next &rarr;</button>
+            {invitation.proposedDate && !answers.rejectedProposedDate ? (
+              <>
+                <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.5rem', marginBottom: '1.5rem', lineHeight: 1.2 }}>
+                  I knew you would say yes! Are you free on <span style={{ color: 'var(--accent-blue)' }}>{new Date(invitation.proposedDate + 'T00:00:00').toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</span>?
+                </h2>
+                <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column' }}>
+                  <button 
+                    onClick={() => { setAnswers({...answers, date: invitation.proposedDate}); handleNext(); }}
+                    style={{ background: 'var(--text-primary)', color: '#fff', padding: '1rem 2rem', borderRadius: '8px', fontSize: '1.1rem', fontWeight: 'bold' }}
+                  >
+                    Yes, I am free!
+                  </button>
+                  <button 
+                    onClick={() => setAnswers({...answers, rejectedProposedDate: true})}
+                    style={{ background: 'transparent', color: 'var(--text-secondary)', textDecoration: 'underline', padding: '1rem', border: 'none', fontSize: '1rem', cursor: 'pointer' }}
+                  >
+                    No, let's pick another date
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.5rem', marginBottom: '1.5rem' }}>When are you free?</h2>
+                <input 
+                  type="date" 
+                  value={answers.date}
+                  onChange={e => setAnswers({...answers, date: e.target.value})}
+                  style={{ padding: '1rem', width: '100%', fontSize: '1.2rem', borderRadius: '12px', border: '2px solid var(--accent-blue)', marginBottom: '2rem', fontFamily: 'inherit' }}
+                />
+                <button onClick={handleNext} disabled={!answers.date} style={{ background: 'var(--text-primary)', color: '#fff', padding: '1rem 2rem', borderRadius: '8px', fontSize: '1.1rem', opacity: answers.date ? 1 : 0.5 }}>Next &rarr;</button>
+              </>
+            )}
           </motion.div>
         )}
 

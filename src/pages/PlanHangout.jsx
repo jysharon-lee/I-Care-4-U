@@ -5,7 +5,7 @@ import { Copy, Check, ArrowLeft, Loader2 } from 'lucide-react';
 import { supabase } from '../supabaseClient';
 
 export default function PlanHangout() {
-  const [formData, setFormData] = useState({ to: '', from: '', email: '' });
+  const [formData, setFormData] = useState({ to: '', from: '', email: '', message: '', proposedDate: '', gifUrl: '' });
   const [generatedLink, setGeneratedLink] = useState('');
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -26,7 +26,12 @@ export default function PlanHangout() {
             type: 'hangout',
             to_name: formData.to,
             from_name: formData.from,
-            media: { email: formData.email } // store email in media jsonb
+            media: { 
+              email: formData.email,
+              message: formData.message,
+              proposedDate: formData.proposedDate,
+              gifUrl: formData.gifUrl
+            } // store extra fields in media jsonb
           }
         ])
         .select()
@@ -97,6 +102,40 @@ export default function PlanHangout() {
                   required
                 />
                 <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>We use EmailJS to securely email you their responses. We don't save this email.</p>
+              </div>
+
+              <div style={{ borderTop: '1px solid #eee', margin: '0.5rem 0' }}></div>
+
+              <div>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Personalized Message (Optional)</label>
+                <textarea 
+                  placeholder="Write a cute message..." 
+                  value={formData.message}
+                  onChange={e => setFormData({ ...formData, message: e.target.value })}
+                  style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', fontFamily: 'inherit', minHeight: '80px', resize: 'vertical' }}
+                />
+              </div>
+
+              <div>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Propose a Date (Optional)</label>
+                <input 
+                  type="date" 
+                  value={formData.proposedDate}
+                  onChange={e => setFormData({ ...formData, proposedDate: e.target.value })}
+                  style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', fontFamily: 'inherit' }}
+                />
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>If left blank, they will be asked to pick a date.</p>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Attach a GIF (Optional)</label>
+                <input 
+                  type="url" 
+                  placeholder="Paste a Giphy link here" 
+                  value={formData.gifUrl}
+                  onChange={e => setFormData({ ...formData, gifUrl: e.target.value })}
+                  style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', fontFamily: 'inherit' }}
+                />
               </div>
 
               {error && <p style={{ color: '#e07a5f', fontSize: '0.9rem' }}>{error}</p>}
